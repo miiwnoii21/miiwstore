@@ -2,118 +2,146 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
 using MiiwStore.DAL;
 using MiiwStore.Models;
+using MiiwStore.Models.ViewModels;
 
 namespace MiiwStore.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : ApiController
     {
         private StoreContext db = new StoreContext();
 
-        // GET: Products
-        public ActionResult Index()
+        // GET: api/Products/List
+        [ActionName("List")]
+        public IEnumerable<ProductModel> GetProducts()
         {
-            return View(db.Products.ToList());
+            List<ProductModel> productModelList = new List<ProductModel>();
+
+            foreach (var item in db.Products.ToList())
+            {
+                productModelList.Add(AutoMapper.Mapper.Map<ProductModel>(item));
+            }
+
+            return productModelList;
+
+            //return db.Products.ToList().Select(AutoMapper.Mapper.Map<ProductModel>);
         }
 
-        // GET: Products/Details/5
-        public ActionResult Details(int? id)
+        [ActionName("Catalog")]
+        // GET: api/Products/Catalog
+        public IEnumerable<ProductModel> GetProductCatalog()
         {
-            if (id == null)
+            //var prod = from p in db.Products
+            //           where p.ProductID == 1 
+            //           select p;
+
+            // select * from Products where Products.ProductID = 1
+
+            var prodWithFirstChild = from p in db.Products.ToList()
+                                     select new Product
+                                     {
+                                         ProductID = p.ProductID,
+                                         ProdName = p.ProdName,
+                                         ProductDetails = new List<ProductDetail> { p.ProductDetails.FirstOrDefault() }
+                                     };
+
+            List<ProductModel> productModelList = new List<ProductModel>();
+
+            foreach (var item in prodWithFirstChild)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                productModelList.Add(AutoMapper.Mapper.Map<ProductModel>(item));
             }
+            return productModelList;
+        }
+
+        // GET: api/products/5/
+        [ActionName("ProductById")]
+        [ResponseType(typeof(ProductModel))]
+        public IHttpActionResult GetProduct(int id)
+        {
             Product product = db.Products.Find(id);
+
+            ProductModel productModel = new ProductModel();
+            productModel = AutoMapper.Mapper.Map<ProductModel>(product);
             if (product == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            return View(product);
+
+            return Ok(productModel);
         }
 
-        // GET: Products/Create
-        public ActionResult Create()
+        // PUT: api/Products/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutProduct(int id, Product product)
         {
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductID,ProdName")] Product product)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Products.Add(product);
+                return BadRequest(ModelState);
+            }
+
+            if (id != product.ProductID)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(product).State = EntityState.Modified;
+
+            try
+            {
                 db.SaveChanges();
-                return RedirectToAction("Index");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return View(product);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
+        // POST: api/Products
+        [ResponseType(typeof(Product))]
+        public IHttpActionResult PostProduct(Product product)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest(ModelState);
             }
+
+            db.Products.Add(product);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = product.ProductID }, product);
+        }
+
+        // DELETE: api/Products/5
+        [ResponseType(typeof(Product))]
+        public IHttpActionResult DeleteProduct(int id)
+        {
             Product product = db.Products.Find(id);
             if (product == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            return View(product);
-        }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductID,ProdName")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(product);
-        }
-
-        // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            return Ok(product);
         }
 
         protected override void Dispose(bool disposing)
@@ -123,6 +151,11 @@ namespace MiiwStore.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool ProductExists(int id)
+        {
+            return db.Products.Count(e => e.ProductID == id) > 0;
         }
     }
 }

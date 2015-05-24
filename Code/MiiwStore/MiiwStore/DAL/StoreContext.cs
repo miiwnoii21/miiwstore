@@ -19,7 +19,7 @@ namespace MiiwStore.DAL
         public DbSet<Order> Orders{get; set;}
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProdDetail> ProdDetails { get; set; }
+        public DbSet<ProductDetail> ProdDetails { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryProduct> CategoryProducts { get; set; }

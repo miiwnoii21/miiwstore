@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Catalog";
+}
+
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.getJSON('/api/products/catalog', function (data) {
+
+                $('#tabCatalog tbody').empty();
+
+                for (var i = 0; i < data.length; i++) {
+
+                    var $td1 = $('<td />'); $td1.text(data[i].ProductID);
+                    var $td2 = $('<td />'); $td2.text(data[i].ProdName);
+                    var $td3 = $('<td />'); $td3.html("<img src='" + data[i].ProductDetails[0].PicURL + "' width='105px' />");
+                    var $tr = $('<tr />'); $tr.append($td1).append($td2).append($td3);
+
+                    $('#tabCatalog tbody').append($tr);
+                }
+
+            });
+        });
+    </script>
+}
+
+<h2>Catalog</h2>
+
+<table id="tabCatalog" cellpadding="1">
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>None</td>
+            <td>None</td>
+            <td>None</td>
+        </tr>
+    </tbody>
+
+</table>
+

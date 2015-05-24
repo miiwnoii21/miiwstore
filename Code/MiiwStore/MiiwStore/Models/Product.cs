@@ -12,7 +12,7 @@ namespace MiiwStore.Models
         public int ProductID { get; set; }
         public string ProdName { get; set;}
 
-        public virtual ICollection<ProdDetail> ProdDetails { get; set; }
+        public virtual ICollection<ProductDetail> ProductDetails { get; set; }
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; }
     }
 }
