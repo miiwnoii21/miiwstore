@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
+
+namespace MiiwStore.Models
+{
+    public class ProdDetail
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ProdDetailID { get; set; }
+        public string ProdDetailDesc { get; set; }
+        public int ProductID { get; set; }
+        public string PicURL { get; set; }
+        public int Price { get; set; }
+        public int Quantity { get; set; }
+
+        public virtual Product Product { get; set; }
+    }
+}
