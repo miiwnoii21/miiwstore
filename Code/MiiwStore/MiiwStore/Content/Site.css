@@ -15,3 +15,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.product-catalog table, .product-catalog th, .product-catalog td {
+    border: 1px inset gray;
+}
+
+.product-catalog th, .product-catalog td {
+    padding: 5px 15px 5px 15px;
+}

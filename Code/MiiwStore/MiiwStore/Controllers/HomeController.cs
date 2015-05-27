@@ -45,5 +45,10 @@ namespace MiiwStore.Controllers
         {
             return View();
         }
+
+        public ActionResult MyApp()
+        {
+            return View();
+        }
     }
 }

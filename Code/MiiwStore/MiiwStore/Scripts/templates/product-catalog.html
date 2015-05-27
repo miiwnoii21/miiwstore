@@ -1,0 +1,22 @@
+﻿<div class="product-catalog">
+    <table cellpadding="2" cellspacing="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>
+                    Image
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in product.items">
+                <td>{{item.ProductID}}</td>
+                <td>{{item.ProdName}}</td>
+                <td>
+                    <img ng-src="{{item.ProductDetails[0].PicURL}}" width="105px" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
