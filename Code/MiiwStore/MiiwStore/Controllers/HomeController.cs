@@ -14,7 +14,7 @@ namespace MiiwStore.Controllers
         public ActionResult Index()
         {
 
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Welcome to Miiw's Store";
 
             return View();
         }
