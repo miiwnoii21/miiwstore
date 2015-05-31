@@ -26,15 +26,15 @@ namespace MiiwStore.Controllers
                                      select new Product
                                      {
                                          ProductID = p.ProductID,
-                                         ProdName = p.ProdName,
+                                         ProductName = p.ProductName,
                                          ProductDetails = new List<ProductDetail> { p.ProductDetails.FirstOrDefault() }
                                      };
 
-            List<ProductModel> productModelList = new List<ProductModel>();
+            List<ProductListModel> productModelList = new List<ProductListModel>();
 
             foreach (var item in prodWithFirstChild)
             {
-                productModelList.Add(AutoMapper.Mapper.Map<ProductModel>(item));
+                productModelList.Add(AutoMapper.Mapper.Map<ProductListModel>(item));
             }
 
 

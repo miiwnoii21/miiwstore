@@ -10,9 +10,9 @@ namespace MiiwStore.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductDetailID { get; set; }
-        public string ProdDetailDesc { get; set; }
+        public string ProductDetailDesc { get; set; }
         public int ProductID { get; set; }
-        public string PicURL { get; set; }
+        public string PicUrl { get; set; }
         public int Price { get; set; }
         public int Quantity { get; set; }
 

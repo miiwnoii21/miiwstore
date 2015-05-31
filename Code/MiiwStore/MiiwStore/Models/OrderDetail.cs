@@ -11,7 +11,7 @@ namespace MiiwStore.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderDetailID { get; set; }
         public int OrderID { get; set; }
-        public int ProdDetailId { get; set; }
+        public int ProductDetailID { get; set; }
         public int Amount { get; set; }
 
         public virtual Order Order { get; set; }

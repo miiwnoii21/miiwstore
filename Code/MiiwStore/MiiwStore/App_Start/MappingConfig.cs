@@ -11,7 +11,12 @@ namespace MiiwStore
     {
         internal static void RegisterMapping()
         {
-            AutoMapper.Mapper.CreateMap<Product, ProductModel>();
+            AutoMapper.Mapper.CreateMap<Product, ProductListModel>()
+                .ForMember(dest => dest.Price,
+                            opt => opt.MapFrom(src => src.ProductDetails.Sum(pd => pd.Price)));
+
+
+
             AutoMapper.Mapper.CreateMap<ProductDetail, ProductDetailModel>();
         }
     }

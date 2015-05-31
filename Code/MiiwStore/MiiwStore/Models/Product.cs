@@ -10,7 +10,8 @@ namespace MiiwStore.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductID { get; set; }
-        public string ProdName { get; set;}
+        public string ProductName { get; set;}
+        public string PicUrl { get; set; }
 
         public virtual ICollection<ProductDetail> ProductDetails { get; set; }
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; }

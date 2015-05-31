@@ -13,7 +13,7 @@ namespace MiiwStore.Models
         
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryID { get; set; }
-        public int CatName { get; set; }
+        public int CategoryName { get; set; }
 
         public virtual ICollection<CategoryProduct> CategoryProducts{get; set;}
     }
