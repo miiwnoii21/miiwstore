@@ -5,7 +5,7 @@
     app.controller('ProductController', ['$http', '$log', function ($http, $log) {
         var product = this;
         product.items = [];
-        $http.get('/api/products/catalog')
+        $http.get('/api/products/list')
             .success(function (products) {
                 product.items = products;
                 $log.log(products);

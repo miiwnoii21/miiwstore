@@ -12,9 +12,11 @@
         <tbody>
             <tr ng-repeat="item in product.items">
                 <td>{{item.ProductID}}</td>
-                <td>{{item.ProdName}}</td>
+                <td>{{item.ProductName}}</td>
+                <td>{{item.Category}}</td>
+                <td>{{item.Price| currency}}</td>
                 <td>
-                    <img ng-src="{{item.ProductDetails[0].PicURL}}" width="105px" />
+                    <img ng-src="{{item.PicUrl}}" width="105" />
                 </td>
             </tr>
         </tbody>

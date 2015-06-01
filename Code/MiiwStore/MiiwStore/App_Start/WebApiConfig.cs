@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Routing;
 
 namespace MiiwStore
 {
@@ -23,6 +25,20 @@ namespace MiiwStore
               defaults: new { controller = "Products", action = "ProductById" },
               constraints: new { id = @"\d+" }
             );
+
+            config.Routes.MapHttpRoute(
+              name: "CreateProductApiById",
+              routeTemplate: "api/products/detail",
+              defaults: new { controller = "Products", action = "CreateDetail" },
+              constraints: new { httpMethod = new HttpMethodConstraint(new[] { "POST" }) }
+            );
+
+            config.Routes.MapHttpRoute(
+             name: "UpdateProductApiById",
+             routeTemplate: "api/products/detail",
+             defaults: new { controller = "Products", action = "UpdateDetail" },
+             constraints: new { httpMethod = new HttpMethodConstraint(new[] { "PUT" }) }
+           );
 
             config.Routes.MapHttpRoute(
               name: "DefaultProductApi",

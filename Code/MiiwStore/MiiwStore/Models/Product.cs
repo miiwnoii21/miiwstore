@@ -14,6 +14,5 @@ namespace MiiwStore.Models
         public string PicUrl { get; set; }
 
         public virtual ICollection<ProductDetail> ProductDetails { get; set; }
-        public virtual ICollection<CategoryProduct> CategoryProducts { get; set; }
     }
 }

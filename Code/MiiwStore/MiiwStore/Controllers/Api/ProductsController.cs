@@ -26,7 +26,7 @@ namespace MiiwStore.Controllers.Api
             {
                 productPrice += item.Price;
             }
-            return new ProductListModel
+            var prodModel = new ProductListModel
             {
                 ProductID = product.ProductID,
                 ProductName = product.ProductName,
@@ -34,7 +34,28 @@ namespace MiiwStore.Controllers.Api
                 PicUrl = product.PicUrl
             };
 
+            var prodChild = product.ProductDetails.FirstOrDefault();
+
+            if (prodChild != null)
+            {
+                var category = prodChild.CategoryProductDetails.FirstOrDefault();
+                if (category != null)
+                {
+                    prodModel.Category = category.Category.CategoryName;
+                }
+            }
+
+            //prodModel.Category = (product.ProductDetails.FirstOrDefault()!=null 
+            //                        && product.ProductDetails.FirstOrDefault().CategoryProductDetails.FirstOrDefault() != null) 
+            //                        ? product.ProductDetails.FirstOrDefault().CategoryProductDetails.FirstOrDefault().Category.CategoryName 
+            //                        : string.Empty;
+
+            return prodModel;
+
         }
+
+        #region Get Methods
+
         // GET: api/Products
         [ActionName("List")]
         public IHttpActionResult GetProducts()
@@ -53,8 +74,9 @@ namespace MiiwStore.Controllers.Api
         }
 
         // GET: api/Products/5
-        [ResponseType(typeof(Product))]
-        public IHttpActionResult GetProduct(int id)
+        [ActionName("ProductById")]
+        [ResponseType(typeof(ProductModel))]
+        public IHttpActionResult GetProductById(int id)
         {
             Product product = db.Products.Find(id);
             if (product == null)
@@ -62,7 +84,7 @@ namespace MiiwStore.Controllers.Api
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
         }
 
         [ActionName("Search")]
@@ -74,55 +96,111 @@ namespace MiiwStore.Controllers.Api
             // return Ok(productListModels);
             return Ok(db.Products.Where(pd => pd.ProductName.Contains(productName)).ToList().Select(AutoMapper.Mapper.Map<ProductListModel>));
         }
+        #endregion
 
         // PUT: api/Products/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutProduct(int id, Product product)
+        //[Route("api/products/detail")]
+        [ActionName("UpdateDetail")]
+        public IHttpActionResult PutProductDetail(ProductDetailModel productDetailModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            string failedList = string.Empty;
 
-            if (id != product.ProductID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(product).State = EntityState.Modified;
+            if (!IsValid(productDetailModel, ref failedList, false)) return BadRequest(failedList);
 
             try
             {
+                // ProductDetail productDetail = AutoMapper.Mapper.Map<ProductDetail>(productDetailModel);
+                // db.Entry(productDetail).State = EntityState.Modified;
+                ProductDetail productDetail = db.ProductDetails.Find(productDetailModel.ProductDetailID);
+
+                if (productDetail == null) return NotFound();
+
+                productDetail.ProductDetailDesc = productDetailModel.ProductDetailDesc;
+                productDetail.Price = productDetailModel.Price;
+                productDetail.PicUrl = productDetailModel.PicURL;
+                productDetail.Quantity = productDetailModel.Quantity;
+                if (productDetailModel.ProductID.HasValue && productDetailModel.ProductID.Value > 0)
+                    productDetail.ProductID = productDetailModel.ProductID;
+
                 db.SaveChanges();
+
+                return Ok(AutoMapper.Mapper.Map<ProductDetailModel>(productDetail));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!ProductExists(id))
+                return InternalServerError(ex);
+            }
+
+           
+        }
+
+        // POST: api/Products/Details
+        //[Route("api/products/detail")]
+        [ActionName("CreateDetail")]
+        [ResponseType(typeof(ProductDetailModel))]
+        public IHttpActionResult PostProductDetail(ProductDetailModel productDetailModel)
+        {
+            string failedList = string.Empty;
+            if (!IsValid(productDetailModel, ref failedList)) return BadRequest(failedList);
+
+            try
+            {
+                ProductDetail productDetail = db.ProductDetails.Add(AutoMapper.Mapper.Map<ProductDetail>(productDetailModel));
+                db.SaveChanges();
+
+                return Ok(AutoMapper.Mapper.Map<ProductDetailModel>(productDetail));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+        }
+
+        private bool IsValid(ProductDetailModel productDetailModel, ref string failedList, bool isCreate = true)
+        {
+            List<string> failList = new List<string>();
+
+
+            if (productDetailModel != null)
+            {
+
+                if (!string.IsNullOrEmpty(productDetailModel.ProductDetailDesc)
+                    && !string.IsNullOrEmpty(productDetailModel.PicURL)
+                    && productDetailModel.Price > 0
+                    && (isCreate || productDetailModel.ProductDetailID > 0))
                 {
-                    return NotFound();
+                    return true;
                 }
                 else
                 {
-                    throw;
+                    if (!isCreate && productDetailModel.ProductDetailID <= 0)
+                    {
+                        failList.Add("Invalid product detail id");
+                    }
+                    if (string.IsNullOrEmpty(productDetailModel.ProductDetailDesc))
+                    {
+                        failList.Add("Please Insert Description");
+                    }
+                    if (string.IsNullOrEmpty(productDetailModel.PicURL))
+                    {
+                        failList.Add("Please Insert PicURL");
+                    }
+                    if (productDetailModel.Price <= 0)
+                    {
+                        failList.Add("Please Insert Price");
+                    }
+
+                    failedList = string.Join(", ", failList.ToArray());
                 }
+
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Products
-        [ResponseType(typeof(Product))]
-        public IHttpActionResult PostProduct(Product product)
-        {
-            if (!ModelState.IsValid)
+            else
             {
-                return BadRequest(ModelState);
+                failedList = "Invalid model";
             }
 
-            db.Products.Add(product);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = product.ProductID }, product);
+            return false;
         }
 
         // DELETE: api/Products/5

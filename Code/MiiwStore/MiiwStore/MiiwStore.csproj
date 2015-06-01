@@ -173,7 +173,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\CategoryProduct.cs" />
+    <Compile Include="Models\CategoryProductDetail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\ProductDetail.cs" />
@@ -181,6 +181,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\ViewModels\ProductDetailModel.cs" />
     <Compile Include="Models\ViewModels\ProductListModel.cs" />
+    <Compile Include="Models\ViewModels\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

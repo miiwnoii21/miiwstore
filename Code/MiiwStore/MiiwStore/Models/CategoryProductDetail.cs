@@ -7,14 +7,14 @@ using System.Web;
 
 namespace MiiwStore.Models
 {
-    public class CategoryProduct
+    public class CategoryProductDetail
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int CategoryID { get; set; }
-        public int ProductID { get; set; }
+        public int ProductDetailID { get; set; }
 
         public virtual Category Category { get; set; }
-        public virtual Product Product { get; set; }
+        public virtual ProductDetail ProductDetail { get; set; }
     }
 }
