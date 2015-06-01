@@ -14,7 +14,7 @@ namespace MiiwStore.Controllers
         public ActionResult Index()
         {
 
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Welcome to Miiw's Store";
 
             return View();
         }
@@ -42,6 +42,11 @@ namespace MiiwStore.Controllers
         }
 
         public ActionResult Catalog()
+        {
+            return View();
+        }
+
+        public ActionResult MyApp()
         {
             return View();
         }
