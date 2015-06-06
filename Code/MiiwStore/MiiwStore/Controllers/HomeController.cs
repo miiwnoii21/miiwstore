@@ -11,34 +11,13 @@ namespace MiiwStore.Controllers
 {
     public class HomeController : Controller
     {
+        private StoreContext db = new StoreContext();
         public ActionResult Index()
         {
-
+            List<Product> products = db.Products.ToList();
             ViewBag.Title = "Welcome to Miiw's Store";
 
             return View();
-        }
-
-        public ActionResult Products()
-        {
-            StoreContext db = new StoreContext();
-            var prodWithFirstChild = from p in db.Products.ToList()
-                                     select new Product
-                                     {
-                                         ProductID = p.ProductID,
-                                         ProductName = p.ProductName,
-                                         ProductDetails = new List<ProductDetail> { p.ProductDetails.FirstOrDefault() }
-                                     };
-
-            List<ProductListModel> productModelList = new List<ProductListModel>();
-
-            foreach (var item in prodWithFirstChild)
-            {
-                productModelList.Add(AutoMapper.Mapper.Map<ProductListModel>(item));
-            }
-
-
-            return View(productModelList);
         }
 
         public ActionResult Catalog()

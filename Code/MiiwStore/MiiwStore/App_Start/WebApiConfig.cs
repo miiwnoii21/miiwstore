@@ -27,18 +27,18 @@ namespace MiiwStore
             );
 
             config.Routes.MapHttpRoute(
-              name: "CreateProductApiById",
-              routeTemplate: "api/products/detail",
-              defaults: new { controller = "Products", action = "CreateDetail" },
+              name: "CreateProductApi",
+              routeTemplate: "api/products",
+              defaults: new { controller = "Products", action = "CreateProduct" },
               constraints: new { httpMethod = new HttpMethodConstraint(new[] { "POST" }) }
             );
 
             config.Routes.MapHttpRoute(
-             name: "UpdateProductApiById",
-             routeTemplate: "api/products/detail",
-             defaults: new { controller = "Products", action = "UpdateDetail" },
+             name: "UpdateProductApi",
+             routeTemplate: "api/products",
+             defaults: new { controller = "Products", action = "UpdateProduct" },
              constraints: new { httpMethod = new HttpMethodConstraint(new[] { "PUT" }) }
-           );
+            );
 
             config.Routes.MapHttpRoute(
               name: "DefaultProductApi",

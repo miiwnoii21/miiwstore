@@ -10,7 +10,7 @@ namespace MiiwStore.Models
     public class Order
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int OrderID { get; set; }
+        public int ID { get; set; }
         public int UserID { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime ShipDate { get; set; }

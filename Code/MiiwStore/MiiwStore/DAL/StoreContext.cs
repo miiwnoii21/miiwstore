@@ -8,7 +8,7 @@ using System.Web;
 
 namespace MiiwStore.DAL
 {
-    public class StoreContext: DbContext
+    public class StoreContext : DbContext
     {
         public StoreContext()
             : base("StoreContext")
@@ -16,18 +16,19 @@ namespace MiiwStore.DAL
 
         }
 
-        public DbSet<Order> Orders{get; set;}
+        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<CategoryProductDetail> CategoryProducts { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
         }
 
     }
