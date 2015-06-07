@@ -7,7 +7,7 @@ using MiiwStore.Models;
 
 namespace MiiwStore.DAL
 {
-    public class StoreInitializer : DropCreateDatabaseAlways<StoreContext>
+    public class StoreInitializer : DropCreateDatabaseIfModelChanges<StoreContext>
     {
         protected override void Seed(StoreContext context)
         {
@@ -104,13 +104,63 @@ namespace MiiwStore.DAL
 
             List<User> userList = new List<User>
             {
-                new User { FirstName = "Boonyarit", LastName = "Wiriyagulpat", Address = "BKK", BirthDate = DateTime.Parse("1983-02-10"), IsActive = false, Gender = "Male", UserName = "batman", Password = "batman001" },
-                new User { FirstName = "Jutamas", LastName = "Kanthong", Address = "BKK", BirthDate = DateTime.Parse("1991-12-21"), IsActive = true, Gender = "Female", UserName = "miiwnoii", Password = "miiwnoii001" }
+                new User { FirstName = "Boonyarit", LastName = "Wiriyagulpat", Address = "BKK", BirthDate = DateTime.Parse("1983-02-10"), IsActive = false, Gender = GenderType.Male, Username = "batman", Password = "batman001" },
+                new User { FirstName = "Jutamas", LastName = "Kanthong", Address = "BKK", BirthDate = DateTime.Parse("1991-12-21"), IsActive = true, Gender = GenderType.Female, Username = "miiwnoii", Password = "miiwnoii001" }
             };
             context.Users.AddRange(userList);
             context.SaveChanges();
 
 
+            List<Order> orderList = new List<Order> { 
+                new Order{
+                    UserID = userList.Where(s => s.Username == "batman").Select(e=>e.ID).Single(), 
+                    OrderDate=DateTime.Now, 
+                    ShipDate=DateTime.Now.AddDays(7), 
+                    OrderDetails= new List<OrderDetail>{
+                        new OrderDetail{
+                            ProductID = productList.Single(s => s.Name == "ตู้วางทีวี: Ralphs").ID, 
+                            Amount=1
+                        },
+                        new OrderDetail{
+                            ProductID = productList.Single(s => s.Name == "ตู้สูง: Ralphs").ID, 
+                            Amount=1
+                        }
+                    }
+                },
+                new Order{
+                    UserID = userList.Where(s => s.Username == "batman").Select(e=>e.ID).Single(), 
+                    OrderDate=DateTime.Now, 
+                    ShipDate=DateTime.Now.AddDays(7), 
+                    OrderDetails= new List<OrderDetail>{
+                        new OrderDetail{
+                            ProductID = productList.Single(s => s.Name == "ตู้วางทีวี: Maximus").ID, 
+                            Amount=1
+                        },
+                        new OrderDetail{
+                            ProductID = productList.Single(s => s.Name == "อุปกรณ์การจัดเก็บ: Maximus").ID, 
+                            Amount=1
+                        }
+                    }
+                },
+                new Order{
+                    UserID = userList.Where(s => s.Username == "miiwnoii").Select(e=>e.ID).Single(), 
+                    OrderDate=DateTime.Now, 
+                    ShipDate=DateTime.Now.AddDays(7), 
+                    OrderDetails= new List<OrderDetail>{
+                        new OrderDetail{
+                            ProductID = productList.Single(s => s.Name == "ตู้วางทีวี: Maximus").ID, 
+                            Amount=1
+                        },
+                        new OrderDetail{
+                            ProductID = productList.Single(s => s.Name == "ตู้สูง: Ralphs").ID, 
+                            Amount=1
+                        }
+                    }
+                }
+            };
+
+            context.Orders.AddRange(orderList);
+            context.SaveChanges();
 
         }
     }

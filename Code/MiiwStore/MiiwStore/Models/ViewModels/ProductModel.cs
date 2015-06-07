@@ -13,7 +13,7 @@ namespace MiiwStore.Models.ViewModels
         public decimal Price { get; set; }
         public int Discount { get; set; }
         public int SubCategoryID { get; set; }
-        public string SubCategory { get; set; }
+        public string SubCategoryName { get; set; }
         public string Description { get; set; }
         public string Size { get; set; }
         public decimal DiscountPrice { get; set; }

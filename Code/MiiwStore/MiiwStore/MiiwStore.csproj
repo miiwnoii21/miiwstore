@@ -164,7 +164,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\Api\OrdersController.cs" />
     <Compile Include="Controllers\Api\ProductsController.cs" />
+    <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAL\StoreContext.cs" />
@@ -173,13 +175,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\EnumTypes.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\ViewModels\OrderDetailModel.cs" />
+    <Compile Include="Models\ViewModels\OrderListModel.cs" />
+    <Compile Include="Models\ViewModels\OrderModel.cs" />
     <Compile Include="Models\ViewModels\ProductModel.cs" />
+    <Compile Include="Models\ViewModels\UserListModel.cs" />
+    <Compile Include="Models\ViewModels\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

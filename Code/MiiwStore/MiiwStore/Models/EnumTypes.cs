@@ -10,4 +10,11 @@ namespace MiiwStore.Models
         P,
         PS
     }
+
+    public enum GenderType
+    {
+        NonSpecified = 0,
+        Male,
+        Female
+    }
 }

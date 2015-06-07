@@ -163,7 +163,7 @@ namespace MiiwStore.Controllers.Api
         }
 
         // POST: api/Products
-        [ActionName("createProduct")]
+        [ActionName("CreateProduct")]
         [ResponseType(typeof(ProductModel))]
         public IHttpActionResult PostProduct(ProductModel model)
         {
@@ -179,7 +179,9 @@ namespace MiiwStore.Controllers.Api
                 Product product = db.Products.Add(AutoMapper.Mapper.Map<Product>(model));
                 db.SaveChanges();
 
-                return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
+               return CreatedAtRoute("DefaultProductApi", new { id = product.ID }, AutoMapper.Mapper.Map<ProductModel>(product));
+
+                // return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
             }
             catch(Exception ex){
                 return InternalServerError(ex);
@@ -189,7 +191,8 @@ namespace MiiwStore.Controllers.Api
         }
 
         // DELETE: api/Products/5
-        [ResponseType(typeof(Product))]
+        [ActionName("DeleteProductById")]
+        [ResponseType(typeof(ProductModel))]
         public IHttpActionResult DeleteProduct(int id)
         {
             Product product = db.Products.Find(id);
@@ -201,7 +204,7 @@ namespace MiiwStore.Controllers.Api
             db.Products.Remove(product);
             db.SaveChanges();
 
-            return Ok(product);
+            return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
         }
 
         protected override void Dispose(bool disposing)

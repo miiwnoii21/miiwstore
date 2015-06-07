@@ -23,7 +23,14 @@ namespace MiiwStore
               name: "DefaultProductApiById",
               routeTemplate: "api/products/{id}",
               defaults: new { controller = "Products", action = "ProductById" },
-              constraints: new { id = @"\d+" }
+              constraints: new { id = @"\d+", httpMethod = new HttpMethodConstraint(new[] { "GET" }) }
+            );
+
+            config.Routes.MapHttpRoute(
+              name: "DeleteProductApiById",
+              routeTemplate: "api/products/{id}",
+              defaults: new { controller = "Products", action = "DeleteProductById" },
+              constraints: new { id = @"\d+", httpMethod = new HttpMethodConstraint(new[] { "DELETE" }) }
             );
 
             config.Routes.MapHttpRoute(
@@ -47,12 +54,6 @@ namespace MiiwStore
             );
 
             #endregion
-
-            config.Routes.MapHttpRoute(
-              name: "DefaultApiWithAction",
-              routeTemplate: "api/{controller}/{action}/{id}",
-              defaults: new { id = RouteParameter.Optional }
-            );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
