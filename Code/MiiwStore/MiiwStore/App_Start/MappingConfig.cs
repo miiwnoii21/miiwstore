@@ -22,7 +22,11 @@ namespace MiiwStore
 
             AutoMapper.Mapper.CreateMap<Order,OrderListModel>()
                 .ForMember(d => d.CustomerName, o => o.MapFrom(s => string.Format("{0} {1}", s.User.FirstName, s.User.LastName)));
-
+            AutoMapper.Mapper.CreateMap<Order, OrderModel>();
+            AutoMapper.Mapper.CreateMap<OrderModel, Order>();
+            AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailModel>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.Name));
+            AutoMapper.Mapper.CreateMap<OrderDetailModel, OrderDetail>();
         }
     }
 }

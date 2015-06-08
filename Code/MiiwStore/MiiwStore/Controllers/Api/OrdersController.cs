@@ -111,7 +111,7 @@ namespace MiiwStore.Controllers.Api
         }
 
         // GET: api/Orders/5
-        [ResponseType(typeof(OrderListModel))]
+        [ResponseType(typeof(OrderModel))]
         public IHttpActionResult GetOrder(int id)
         {
             Order order = db.Orders.Find(id);
@@ -119,7 +119,7 @@ namespace MiiwStore.Controllers.Api
             {
                 return NotFound();
             }
-            return Ok(AutoMapper.Mapper.Map<OrderListModel>(order));
+            return Ok(AutoMapper.Mapper.Map<OrderModel>(order));
         }
 
         //GET: api/Orders
@@ -185,14 +185,31 @@ namespace MiiwStore.Controllers.Api
         }
 
         // POST: api/Orders
-        [ResponseType(typeof(Order))]
-        public IHttpActionResult PostOrder(Order order)
+        [ResponseType(typeof(OrderModel))]
+        public IHttpActionResult PostOrder(OrderModel model)
         {
 
-            db.Orders.Add(order);
-            db.SaveChanges();
+            string errorMessage = string.Empty;
+            if (!IsValid(model, ref errorMessage))
+            {
+                return BadRequest(errorMessage);
+            }
 
-            return CreatedAtRoute("DefaultApi", new { id = order.ID }, order);
+            try
+            {
+                Order tmpOrder = AutoMapper.Mapper.Map<Order>(model);
+                tmpOrder.OrderDate = DateTime.Now;
+                Order order = db.Orders.Add(tmpOrder);
+                db.SaveChanges();
+
+                return CreatedAtRoute("DefaultApi", new { id = model.ID }, AutoMapper.Mapper.Map<OrderModel>(order));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+            //return CreatedAtRoute("DefaultApi", new { id = order.ID }, order);
         }
 
         // DELETE: api/Orders/5
