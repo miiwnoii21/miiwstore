@@ -11,81 +11,33 @@ using System.Web.Http.Description;
 using MiiwStore.DAL;
 using MiiwStore.Models;
 using MiiwStore.Models.ViewModels;
+using MiiwStore.Services;
 
 namespace MiiwStore.Controllers.Api
 {
     public class ProductsController : ApiController
     {
-        private StoreContext db = new StoreContext();
 
-        private bool IsValid(ProductModel model, ref string errorMessage, bool isCreate = true)
+        private readonly ProductService productService;
+
+        public ProductsController()
         {
-            List<string> failList = new List<string>();
-
-
-            if (model != null)
-            {
-
-                if (!isCreate && db.Products.Find(model.ID) == null)
-                {
-                    failList.Add("Invalid product id");
-                }
-                if (isCreate && db.Products.Find(model.ID) != null)
-                {
-                    failList.Add("Duplicate product id");
-                }
-                if (string.IsNullOrEmpty(model.Name))
-                {
-                    failList.Add("Please insert name");
-                }
-                if (string.IsNullOrEmpty(model.Image))
-                {
-                    failList.Add("Please Insert image");
-                }
-                if (model.Price <= 0)
-                {
-                    failList.Add("Please Insert Price");
-                }
-                if (db.SubCategories.Find(model.SubCategoryID) == null)
-                {
-                    failList.Add("Invalid subcategory id");
-                }
-                if (failList.Count > 0)
-                {
-                    errorMessage = string.Join(", ", failList.ToArray());
-                    return false;
-                }
-
-                return true;
-            }
-            else
-            {
-                errorMessage = "Invalid model";
-                return false;
-            }
-
+            productService = new ProductService();
         }
 
-        // GET: api/
+
+
+        // GET: api/Products
         [ActionName("List")]
         public IHttpActionResult GetProducts()
         {
-            List<Product> products = db.Products.ToList();
-            if (products.Count == 0)
+            var products = productService.GetProducts();
+            if (products == null)
             {
                 return NotFound();
             }
 
-            //List<ProductListModel> list = new List<ProductListModel>();
-
-            //products.ForEach(s => list.Add(AutoMapper.Mapper.Map<ProductListModel>(s)));
-
-            //return Ok(list);
-
-            //return Ok(products.Select(s => AutoMapper.Mapper.Map<ProductListModel>(s)));
-
-            //return Ok(AutoMapper.Mapper.Map<List<ProductListModel>>(products));
-            return Ok(products.Select(AutoMapper.Mapper.Map<ProductModel>));
+            return Ok(products);
         }
 
         // GET: api/Products/5
@@ -93,36 +45,27 @@ namespace MiiwStore.Controllers.Api
         [ResponseType(typeof(Product))]
         public IHttpActionResult GetProduct(int id)
         {
-            Product product = db.Products.Find(id);
-            if (product == null)
+            ProductModel model = productService.GetById(id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
+            return Ok(model);
         }
 
         [ActionName("Search")]
         public IHttpActionResult GetProduct(string name = "", string category = "", string subCategory = "")
         {
 
-            //bool chkName = (!string.IsNullOrEmpty(name) && contains(name));
-            // select * from table1 where ( ( name is null || table1.name like '%name%') and ( category is null || table1.category like '%cat%')
-            IEnumerable<Product> products = db.Products.ToList().Where(s =>
-            {
+            IEnumerable<ProductModel> model = productService.Search(name, category, subCategory);
 
-                return ((string.IsNullOrEmpty(name) || s.Name.ToLowerInvariant().Contains(name.ToLowerInvariant()))
-                && (string.IsNullOrEmpty(subCategory) || s.SubCategory.Name.ToLowerInvariant().Contains(subCategory.ToLowerInvariant()))
-                && (string.IsNullOrEmpty(category) || s.SubCategory.Category.Name.ToLowerInvariant().Contains(category.ToLowerInvariant())));
-
-            });
-
-            if (products.Count() <= 0)
+            if (model.Count() <= 0)
             {
                 return NotFound();
             }
 
-            return Ok(products.Select(s => AutoMapper.Mapper.Map<ProductModel>(s)));
+            return Ok(model.Select(s => AutoMapper.Mapper.Map<ProductModel>(s)));
 
         }
 
@@ -132,28 +75,14 @@ namespace MiiwStore.Controllers.Api
         public IHttpActionResult PutProduct(ProductModel model)
         {
 
-            //db.Entry(product).State = EntityState.Modified;
-            string errorMessage = string.Empty;
-
-            if (!IsValid(model,ref errorMessage, false))
-            {
-                return BadRequest(errorMessage);
-            }
-            
             try
             {
+                string errorMessage = string.Empty;
+                ProductModel resultModel = productService.Update(model, ref errorMessage);
 
-                Product product = db.Products.Find(model.ID);
-                product.Name = model.Name;
-                product.Price = model.Price;
-                product.Image = model.Image;
-                product.Description = model.Description;
-                product.Discount = model.Discount;
-                product.SubCategoryID = model.SubCategoryID;
-                product.Size = model.Size;
-                db.SaveChanges();
+                if (string.IsNullOrEmpty(errorMessage)) return Ok(resultModel);
+                else return BadRequest(errorMessage);
 
-                return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
             }
             catch (Exception ex)
             {
@@ -167,27 +96,21 @@ namespace MiiwStore.Controllers.Api
         [ResponseType(typeof(ProductModel))]
         public IHttpActionResult PostProduct(ProductModel model)
         {
-            string errorMessage = string.Empty;
-
-            if (!IsValid(model, ref errorMessage))
-            {
-                return BadRequest(errorMessage);
-            }
-
+            
             try
             {
-                Product product = db.Products.Add(AutoMapper.Mapper.Map<Product>(model));
-                db.SaveChanges();
+                string errorMessage = string.Empty;
+                ProductModel resultModel = productService.Create(model, ref errorMessage);
 
-               return CreatedAtRoute("DefaultProductApi", new { id = product.ID }, AutoMapper.Mapper.Map<ProductModel>(product));
-
-                // return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
+                if (resultModel != null) return CreatedAtRoute("DefaultProductApi", new { id = resultModel.ID }, resultModel);
+                else return BadRequest(errorMessage);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return InternalServerError(ex);
             }
 
-            
+
         }
 
         // DELETE: api/Products/5
@@ -195,30 +118,23 @@ namespace MiiwStore.Controllers.Api
         [ResponseType(typeof(ProductModel))]
         public IHttpActionResult DeleteProduct(int id)
         {
-            Product product = db.Products.Find(id);
-            if (product == null)
+            ProductModel model = productService.Delete(id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            db.Products.Remove(product);
-            db.SaveChanges();
-
-            return Ok(AutoMapper.Mapper.Map<ProductModel>(product));
+            return Ok(model);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                productService.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool ProductExists(int id)
-        {
-            return db.Products.Count(e => e.ID == id) > 0;
-        }
     }
 }

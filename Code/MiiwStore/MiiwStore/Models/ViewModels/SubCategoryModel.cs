@@ -9,6 +9,7 @@ namespace MiiwStore.Models.ViewModels
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string FullName { get; set; }
         public int CategoryID { get; set; }
         public bool IsInUse { get; set; }
         public bool IsDelete { get; set; }

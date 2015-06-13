@@ -31,7 +31,8 @@ namespace MiiwStore
             AutoMapper.Mapper.CreateMap<Category, CategoryModel>();
             AutoMapper.Mapper.CreateMap<CategoryModel, Category>();
             AutoMapper.Mapper.CreateMap<SubCategory, SubCategoryModel>()
-                .ForMember(d => d.IsInUse, o => o.MapFrom(s => s.Products.Count > 0));
+                .ForMember(d => d.IsInUse, o => o.MapFrom(s => s.Products.Count > 0))
+                .ForMember(d => d.FullName, o => o.MapFrom(s => string.Format("{0} : {1}", s.Category.Name, s.Name)));
             AutoMapper.Mapper.CreateMap<SubCategoryModel, SubCategory>();
         }
     }
