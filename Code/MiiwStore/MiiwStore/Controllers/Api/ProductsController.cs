@@ -29,9 +29,10 @@ namespace MiiwStore.Controllers.Api
 
         // GET: api/Products
         [ActionName("List")]
+        [ResponseType(typeof(ProductModel))]
         public IHttpActionResult GetProducts()
         {
-            var products = productService.GetProducts();
+            IEnumerable<ProductModel> products = productService.GetProducts();
             if (products == null)
             {
                 return NotFound();
@@ -42,7 +43,7 @@ namespace MiiwStore.Controllers.Api
 
         // GET: api/Products/5
         [ActionName("ProductById")]
-        [ResponseType(typeof(Product))]
+        [ResponseType(typeof(ProductModel))]
         public IHttpActionResult GetProduct(int id)
         {
             ProductModel model = productService.GetById(id);
@@ -55,12 +56,13 @@ namespace MiiwStore.Controllers.Api
         }
 
         [ActionName("Search")]
+        [ResponseType(typeof(ProductModel))]
         public IHttpActionResult GetProduct(string name = "", string category = "", string subCategory = "")
         {
 
             IEnumerable<ProductModel> model = productService.Search(name, category, subCategory);
 
-            if (model.Count() <= 0)
+            if (model.Count() == 0)
             {
                 return NotFound();
             }

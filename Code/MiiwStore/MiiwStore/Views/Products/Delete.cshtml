@@ -1,4 +1,4 @@
-﻿@model MiiwStore.Models.Product
+﻿@model MiiwStore.Models.ViewModels.ProductModel
 
 @{
     ViewBag.Title = "Delete";
@@ -12,11 +12,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.SubCategory.Name)
+            @Html.DisplayNameFor(model => model.SubCategoryName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SubCategory.Name)
+            @Html.DisplayFor(model => model.SubCategoryName)
         </dd>
 
         <dt>
@@ -65,6 +65,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.Size)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountPrice)
         </dd>
 
         <dt>

@@ -11,16 +11,16 @@ namespace MiiwStore
             #region Default Bundle
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                                "~/Scripts/jquery-{version}.js"));
+                                "~/Scripts/libs/jquery-{version}.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                        "~/Scripts/libs/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/libs/bootstrap.js",
+                      "~/Scripts/libs/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
@@ -56,7 +56,6 @@ namespace MiiwStore
             bundles.Add(new StyleBundle("~/Content/pluton/css").Include(
                             "~/Content/bootstrap.css",
                             "~/Content/bootstrap-responsive.css",
-                            "~/Content/Site.css",
                             "~/Content/pluton.css",
                             "~/Content/jquery.cslider.css",
                             "~/Content/jquery.bxslider.css",

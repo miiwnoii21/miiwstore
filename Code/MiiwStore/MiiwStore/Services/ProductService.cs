@@ -112,7 +112,7 @@ namespace MiiwStore.Services
 
             });
 
-            if (products.Count() <= 0)
+            if (products.Count() == 0)
             {
                 return null;
             }

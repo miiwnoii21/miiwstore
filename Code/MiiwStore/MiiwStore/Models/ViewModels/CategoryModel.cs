@@ -10,5 +10,12 @@ namespace MiiwStore.Models.ViewModels
         public int ID { get; set; }
         public string Name { get; set; }
         public IEnumerable<SubCategoryModel> SubCategories { get; set; }
+        //public IEnumerable<System.Web.Mvc.SelectListItem> SubCatList
+        //{
+        //    get
+        //    {
+        //        return SubCategories.Select(e => new System.Web.Mvc.SelectListItem { Value = e.ID.ToString(), Text = e.Name });
+        //    }
+        //}
     }
 }

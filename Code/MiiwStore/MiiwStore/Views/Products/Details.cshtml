@@ -1,4 +1,4 @@
-﻿@model MiiwStore.Models.Product
+﻿@model MiiwStore.Models.ViewModels.ProductModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.SubCategory.Name)
+            @Html.DisplayNameFor(model => model.SubCategoryName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SubCategory.Name)
+            @Html.DisplayFor(model => model.SubCategoryName)
         </dd>
 
         <dt>
@@ -67,12 +67,22 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.DiscountPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountPrice)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Quantity)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Quantity)
         </dd>
+
+        
 
     </dl>
 </div>
