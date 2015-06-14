@@ -99,6 +99,7 @@ namespace MiiwStore.Services
         public IEnumerable<SubCategoryModel> GetSubCategories()
         {
             List<SubCategoryModel> models = new List<SubCategoryModel>();
+            //db.SubCategories.ToList().ForEach(s => models.Add(new SubCategoryModel(s)));
             db.SubCategories.ToList().ForEach(s => models.Add(AutoMapper.Mapper.Map<SubCategoryModel>(s)));
             return models;
 

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D12B4BF-1D04-4856-BCD6-11F37C6090B6}</ProjectGuid>
+    <ProjectGuid>{43BB02DF-820C-4659-BC31-9039F3941242}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MiiwStore.Models</RootNamespace>
-    <AssemblyName>MiiwStore.Models</AssemblyName>
+    <RootNamespace>MiiwStore.DAL</RootNamespace>
+    <AssemblyName>MiiwStore.DAL</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,26 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category.cs" />
-    <Compile Include="EnumTypes.cs" />
-    <Compile Include="Order.cs" />
-    <Compile Include="OrderDetail.cs" />
-    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubCategory.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="ViewModels\CategoryModel.cs" />
-    <Compile Include="ViewModels\OrderDetailModel.cs" />
-    <Compile Include="ViewModels\OrderListModel.cs" />
-    <Compile Include="ViewModels\OrderModel.cs" />
-    <Compile Include="ViewModels\ProductModel.cs" />
-    <Compile Include="ViewModels\SubCategoryModel.cs" />
-    <Compile Include="ViewModels\UserListModel.cs" />
-    <Compile Include="ViewModels\UserModel.cs" />
+    <Compile Include="StoreContext.cs" />
+    <Compile Include="StoreInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MiiwStore.Models\MiiwStore.Models.csproj">
+      <Project>{3d12b4bf-1d04-4856-bcd6-11f37c6090b6}</Project>
+      <Name>MiiwStore.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

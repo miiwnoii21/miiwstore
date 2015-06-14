@@ -13,5 +13,14 @@ namespace MiiwStore.Models.ViewModels
         public int CategoryID { get; set; }
         public bool IsInUse { get; set; }
         public bool IsDelete { get; set; }
+
+        //public SubCategoryModel(SubCategory data)
+        //{
+        //    ID = data.ID;
+        //    Name = data.Name;
+        //    FullName = string.Format("{0} : {1}", data.Category.Name, data.Name);
+        //    CategoryID = data.CategoryID;
+        //    IsInUse = (data.Products.Count > 0);
+        //}
     }
 }
