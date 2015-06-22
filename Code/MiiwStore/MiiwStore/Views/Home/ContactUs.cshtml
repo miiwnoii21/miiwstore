@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "ContactUs";
+}
+@section styles{
+    <style type="text/css">
+      .map-wrapper {
+          padding: 10px;
+      }
+
+          .map-wrapper .map-canvas {
+              height: 350px;
+              width: 100%;
+          }
+    </style>
+}
+@section scripts{
+    <!-- Load google maps api and call initializeMap function defined in app.js -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;callback=initializeMap"></script>
+
+    <script type="text/javascript">
+        //Initialize google map for contact setion with your location.
+
+        function initializeMap() {
+
+            var lat = '13.804002'; //Set your latitude.
+            var lon = '100.580759'; //Set your longitude.
+
+            var myOptions = {
+                scrollwheel: false,
+                draggable: false,
+                disableDefaultUI: true,
+                center: new google.maps.LatLng(lat, lon),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            //Bind map to elemet with id map-canvas
+            var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: new google.maps.LatLng(lat, lon),
+            });
+
+        }
+
+
+    </script>
+}
+<div id="contact" class="contact">
+    <div class="section secondary-section">
+        <div class="container">
+            <div class="title">
+                <h1>Contact Us</h1>
+                <p>lorem ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+            </div>
+        </div>
+        <div class="map-wrapper">
+            <div class="map-canvas" id="map-canvas">Loading map...</div>
+
+        </div>
+        <div class="container">
+            <div class="span9 center contact-info">
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

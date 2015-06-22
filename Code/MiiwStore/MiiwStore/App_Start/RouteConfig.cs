@@ -13,6 +13,9 @@ namespace MiiwStore
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("AboutUs", "about", new { controller = "Home", action = "AboutUs" });
+            routes.MapRoute("ContactUs", "contact", new { controller = "Home", action = "ContactUs" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

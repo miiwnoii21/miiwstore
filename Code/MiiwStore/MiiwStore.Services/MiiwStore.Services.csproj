@@ -58,6 +58,10 @@
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MiiwStore.DAL\MiiwStore.DAL.csproj">
       <Project>{43bb02df-820c-4659-bc31-9039f3941242}</Project>
       <Name>MiiwStore.DAL</Name>
@@ -66,10 +70,6 @@
       <Project>{3d12b4bf-1d04-4856-bcd6-11f37c6090b6}</Project>
       <Name>MiiwStore.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />

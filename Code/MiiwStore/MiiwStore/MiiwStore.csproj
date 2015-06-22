@@ -1052,7 +1052,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\libs\version.json" />
     <Content Include="Views\Home\Catalog.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Pluton.cshtml" />
     <Content Include="Views\Home\MyApp.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1075,6 +1075,13 @@
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutPluton.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SubCategoryModel.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiiwStore.DAL\MiiwStore.DAL.csproj">
@@ -1089,10 +1096,6 @@
       <Project>{37e0579e-cd35-49bf-b9fb-1c0c34208015}</Project>
       <Name>MiiwStore.Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

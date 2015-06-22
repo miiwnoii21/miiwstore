@@ -11,14 +11,21 @@ namespace MiiwStore.Controllers
 {
     public class HomeController : Controller
     {
-        private StoreContext db = new StoreContext();
+       
         public ActionResult Index()
         {
-            List<Product> products = db.Products.ToList();
             ViewBag.Title = "Welcome to Miiw's Store";
 
             return View();
         }
+
+        public ActionResult Pluton()
+        {
+            ViewBag.Title = "Welcome to Miiw's Store";
+
+            return View();
+        }
+
 
         public ActionResult Catalog()
         {
@@ -26,6 +33,16 @@ namespace MiiwStore.Controllers
         }
 
         public ActionResult MyApp()
+        {
+            return View();
+        }
+
+        public ActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public ActionResult ContactUs()
         {
             return View();
         }
