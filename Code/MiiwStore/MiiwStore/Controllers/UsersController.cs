@@ -8,17 +8,24 @@ using System.Web;
 using System.Web.Mvc;
 using MiiwStore.DAL;
 using MiiwStore.Models;
+using MiiwStore.Services;
+using MiiwStore.Models.ViewModels;
 
 namespace MiiwStore.Controllers
 {
     public class UsersController : Controller
     {
-        private StoreContext db = new StoreContext();
+        private readonly UserService userService;
+
+        public UsersController()
+        {
+            userService = new UserService();
+        }
 
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(userService.GetUsers());
         }
 
         // GET: Users/Details/5
@@ -28,7 +35,8 @@ namespace MiiwStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+            //UserListModel user = userService.GetById(id.Value);
+            UserModel user = userService.GetById(id.Value);
             if (user == null)
             {
                 return HttpNotFound();
@@ -47,12 +55,11 @@ namespace MiiwStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,FirstName,LastName,BirthDate,Address,Gender,IsActive,UserName,Password")] User user)
+        public ActionResult Create([Bind(Include = "UserID,FirstName,LastName,BirthDate,Address,Gender,IsActive,UserName,Password")] UserModel user)
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
-                db.SaveChanges();
+                userService.Create(user);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +73,8 @@ namespace MiiwStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+            UserModel user = userService.GetById(id.Value);
+            
             if (user == null)
             {
                 return HttpNotFound();
@@ -79,12 +87,11 @@ namespace MiiwStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,FirstName,LastName,BirthDate,Address,Gender,IsActive,UserName,Password")] User user)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,BirthDate,Address,Gender,IsActive,UserName,Password")] UserModel user)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+                userService.Update(user);
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -97,7 +104,7 @@ namespace MiiwStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+            UserModel user = userService.GetById(id.Value);
             if (user == null)
             {
                 return HttpNotFound();
@@ -110,9 +117,7 @@ namespace MiiwStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
+            userService.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -120,7 +125,7 @@ namespace MiiwStore.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                userService.Dispose();
             }
             base.Dispose(disposing);
         }

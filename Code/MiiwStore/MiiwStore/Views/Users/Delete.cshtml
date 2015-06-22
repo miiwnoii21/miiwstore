@@ -1,4 +1,4 @@
-﻿@model MiiwStore.Models.User
+﻿@model MiiwStore.Models.ViewModels.UserModel
 
 @{
     ViewBag.Title = "Delete";
@@ -60,11 +60,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.Username)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UserName)
+            @Html.DisplayFor(model => model.Username)
         </dd>
 
         <dt>

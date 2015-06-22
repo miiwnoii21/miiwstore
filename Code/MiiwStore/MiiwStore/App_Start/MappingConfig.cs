@@ -19,6 +19,7 @@ namespace MiiwStore
             AutoMapper.Mapper.CreateMap<User, UserListModel>()
                 .ForMember(d => d.HasOrder, o => o.MapFrom(s => (s.Orders != null && s.Orders.Any(ord => ord.ShipDate > DateTime.Now.Date))));
             AutoMapper.Mapper.CreateMap<UserModel, User>();
+            AutoMapper.Mapper.CreateMap<User, UserModel>();
 
             AutoMapper.Mapper.CreateMap<Order,OrderListModel>()
                 .ForMember(d => d.CustomerName, o => o.MapFrom(s => string.Format("{0} {1}", s.User.FirstName, s.User.LastName)));
